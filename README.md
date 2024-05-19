@@ -1,4 +1,4 @@
-# Welcome to MS Teams Clone!
+# Welcome to Chat App !
 
 <img width="1437" alt="Screen Shot 2024-01-04 at 1 20 09 PM" src="https://github.com/zaki1234-inara/chat_app/assets/128190993/aa167178-488b-4934-b06f-edd05703ff6d">
 
