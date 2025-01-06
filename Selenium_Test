@@ -1,0 +1,59 @@
+const { Builder, By, Key, until } = require("selenium-webdriver");
+
+(async function chatAppTest() {
+  let driver = await new Builder().forBrowser("chrome").build();
+
+  try {
+    // Navigate to the app
+    await driver.get("http://localhost:3000"); // Adjust URL based on where the app is hosted
+
+    // Wait for the page to load and display the chat list
+    await driver.wait(until.elementLocated(By.css(".chat-list")), 10000);
+
+    // Test case 1: Add a new chat
+    let addChatButton = await driver.findElement(By.css(".add-chat-button"));
+    await addChatButton.click();
+    let chatNameInput = await driver.findElement(By.css(".chat-name-input"));
+    await chatNameInput.sendKeys("Test Chat", Key.RETURN);
+
+    // Validate new chat appears in the chat list
+    let newChat = await driver.wait(
+      until.elementLocated(By.xpath("//div[contains(text(), 'Test Chat')]")),
+      5000
+    );
+    console.log("New chat added: ", await newChat.getText());
+
+    // Test case 2: Send a message
+    let messageInput = await driver.findElement(By.css(".message-input"));
+    await messageInput.sendKeys("Hello, World!", Key.RETURN);
+
+    // Validate message appears in the chat
+    let sentMessage = await driver.wait(
+      until.elementLocated(By.xpath("//div[contains(text(), 'Hello, World!')]")),
+      5000
+    );
+    console.log("Message sent: ", await sentMessage.getText());
+
+    // Test case 3: Add a new user to the chat
+    let addUserInput = await driver.findElement(By.css(".user-input"));
+    await addUserInput.sendKeys("John Wick", Key.RETURN);
+
+    // Validate user is added
+    let addedUser = await driver.wait(
+      until.elementLocated(By.xpath("//div[contains(text(), 'John Wick')]")),
+      5000
+    );
+    console.log("User added: ", await addedUser.getText());
+
+    // Test case 4: Validate the presence of an image in the chat
+    let imageElement = await driver.findElement(By.css(".chat-image"));
+    if (imageElement) {
+      console.log("Image is present in the chat.");
+    }
+  } catch (error) {
+    console.error("An error occurred:", error);
+  } finally {
+    // Close the browser
+    await driver.quit();
+  }
+})();
